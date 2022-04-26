@@ -1,4 +1,6 @@
-﻿namespace DevIO.App.Configurations
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace DevIO.App.Configurations
 {
     public static class MvcConfig
     {
@@ -16,6 +18,9 @@
                 options.ModelBindingMessageProvider.SetUnknownValueIsInvalidAccessor((x) => "O valor preenchido é inválido para este campo.");
                 options.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(x => "O campo deve ser numérico.");
                 options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(x => "Este campo precisa ser preenchido.");
+
+                //validar o ForgeryToken em todas as requisições
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
             return services;
         }

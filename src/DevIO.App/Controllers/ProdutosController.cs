@@ -74,7 +74,6 @@ namespace DevIO.App.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("novo-produto")]
         [ClaimsAuthorize("Produto", "Adicionar")]
         public async Task<IActionResult> Create(ProdutoViewModel produtoViewModel)
@@ -117,7 +116,6 @@ namespace DevIO.App.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("editar-produto/{id:guid}")]
         [ClaimsAuthorize("Produto", "Editar")]
         public async Task<IActionResult> Edit(Guid id, ProdutoViewModel produtoViewModel)
@@ -170,7 +168,6 @@ namespace DevIO.App.Controllers
 
         // POST: Produtos/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         [Route("excluir-produto/{id:guid}")]
         [ClaimsAuthorize("Produto", "Excluir")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

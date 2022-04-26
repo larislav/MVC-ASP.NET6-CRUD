@@ -52,6 +52,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
+    app.UseDeveloperExceptionPage();
     
 }
 else
@@ -60,7 +61,7 @@ else
     app.UseStatusCodePagesWithRedirects("/erro/{0}");
 
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseHsts(); //implementaçao de segurança que os browsers modernos ja suportem que força uma conexão segura
 }
 
 app.UseHttpsRedirection();
