@@ -28,6 +28,7 @@ namespace DevIO.Business.Services
                 Notificar("Já existe um fornecedor com este documento informado.");
                 return;
             }
+            var teste = fornecedor;
 
             await _fornecedorRepository.Adicionar(fornecedor);
         }

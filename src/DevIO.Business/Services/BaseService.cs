@@ -33,7 +33,7 @@ namespace DevIO.Business.Services
         }
 
         //TV = Entidade de validação, TE = entidade de dominio
-        protected bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade) where  TV : AbstractValidator<TE> where TE : Entity
+        public bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade) where  TV : AbstractValidator<TE> where TE : Entity
         {
             var validator = validacao.Validate(entidade);
             if (validator.IsValid) return true;
