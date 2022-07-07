@@ -14,14 +14,20 @@ using Xunit;
 
 namespace DevIO.Tests
 {
+    [Collection(nameof(FornecedorCollection))]
     public class FornecedorTests 
     {
+        private readonly FornecedorTestsFixture _fornecedorTestsFixture;
+        public FornecedorTests(FornecedorTestsFixture fornecedorTestsFixture)
+        {
+            _fornecedorTestsFixture = fornecedorTestsFixture;
+        }
+
         [Fact]
         public void Adicionar_FornecedorPFInvalido_DeveFalhar()
         {
             //Arrange
-            var fornecedor = new Fornecedor();
-            fornecedor.Endereco = new Endereco();
+            var fornecedor = _fornecedorTestsFixture.GerarFornecedorInvalido();
             var mocker = new AutoMocker();
             var fornecedorService = mocker.CreateInstance<FornecedorService>();
 
@@ -38,22 +44,7 @@ namespace DevIO.Tests
         public void Adicionar_FornecedorPFValido_DeveAdicionarComSucesso()
         {
             //Arrange
-            var fornecedor = new Fornecedor
-            {
-                Nome = "Eddie Munson",
-                Documento = "29433590090",
-                TipoFornecedor = TipoFornecedor.PessoaFisica,
-                Endereco = new Endereco
-                {
-                    Logradouro = "Stranger",
-                    Bairro = "Things",
-                    Cep = "50000000",
-                    Cidade = "Hawkins",
-                    Estado = "Indiana",
-                    Numero = "011"
-                }
-
-            };
+            var fornecedor = _fornecedorTestsFixture.GerarFornecedorPFValido();
             var mocker = new AutoMocker();
             var fornecedorService = mocker.CreateInstance<FornecedorService>();
 
@@ -85,14 +76,7 @@ namespace DevIO.Tests
         public void Atualizar_FornecedorPFInvalido_DeveFalhar()
         {
             //Arrange
-            var fornecedor = new Fornecedor
-            { 
-                //Id = Guid.NewGuid(),
-                Nome = "Eddie Munson HellFire",
-                Documento = "29433590090",
-                TipoFornecedor = TipoFornecedor.PessoaFisica
-
-            };
+            var fornecedor = _fornecedorTestsFixture.GerarFornecedorInvalido();
             var mocker = new AutoMocker();
             var fornecedorService = mocker.CreateInstance<FornecedorService>();
 
@@ -108,14 +92,7 @@ namespace DevIO.Tests
         public void Atualizar_FornecedorPFValido_DeveAtualizarComSucesso()
         {
             //Arrange
-            var fornecedor = new Fornecedor
-            {
-                Id = Guid.NewGuid(),
-                Nome = "Eddie Munson HellFire",
-                Documento = "29433590090",
-                TipoFornecedor = TipoFornecedor.PessoaFisica
-
-            };
+            var fornecedor = _fornecedorTestsFixture.GerarFornecedorPFValido();
             var mocker = new AutoMocker();
             var fornecedorService = mocker.CreateInstance<FornecedorService>();
 
