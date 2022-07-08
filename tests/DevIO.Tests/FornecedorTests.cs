@@ -18,9 +18,11 @@ namespace DevIO.Tests
     public class FornecedorTests 
     {
         private readonly FornecedorTestsFixture _fornecedorTestsFixture;
+        private readonly FornecedorService _fornecedorService;
         public FornecedorTests(FornecedorTestsFixture fornecedorTestsFixture)
         {
             _fornecedorTestsFixture = fornecedorTestsFixture;
+            _fornecedorService = _fornecedorTestsFixture.ObterFornecedorService();
         }
 
         [Fact]
@@ -28,16 +30,14 @@ namespace DevIO.Tests
         {
             //Arrange
             var fornecedor = _fornecedorTestsFixture.GerarFornecedorInvalido();
-            var mocker = new AutoMocker();
-            var fornecedorService = mocker.CreateInstance<FornecedorService>();
 
             //Act
-            fornecedorService.Adicionar(fornecedor);
+            _fornecedorService.Adicionar(fornecedor);
 
             //Assert
-            Assert.False(fornecedorService.ExecutarValidacao(new FornecedorValidation(), fornecedor));
-            Assert.False(fornecedorService.ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco));
-            mocker.GetMock<IFornecedorRepository>().Verify(r => r.Adicionar(fornecedor), Times.Never);
+            Assert.False(_fornecedorService.ExecutarValidacao(new FornecedorValidation(), fornecedor));
+            Assert.False(_fornecedorService.ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco));
+            _fornecedorTestsFixture.Mocker.GetMock<IFornecedorRepository>().Verify(r => r.Adicionar(fornecedor), Times.Never);
         }
 
         [Fact]
@@ -45,16 +45,14 @@ namespace DevIO.Tests
         {
             //Arrange
             var fornecedor = _fornecedorTestsFixture.GerarFornecedorPFValido();
-            var mocker = new AutoMocker();
-            var fornecedorService = mocker.CreateInstance<FornecedorService>();
 
             //Act
-            fornecedorService.Adicionar(fornecedor);
+            _fornecedorService.Adicionar(fornecedor);
 
             //Assert
-            Assert.True(fornecedorService.ExecutarValidacao(new FornecedorValidation(), fornecedor));
-            Assert.True(fornecedorService.ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco));
-            mocker.GetMock<IFornecedorRepository>().Verify(r => r.Adicionar(fornecedor), Times.Once);
+            Assert.True(_fornecedorService.ExecutarValidacao(new FornecedorValidation(), fornecedor));
+            Assert.True(_fornecedorService.ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco));
+            _fornecedorTestsFixture.Mocker.GetMock<IFornecedorRepository>().Verify(r => r.Adicionar(fornecedor), Times.Once);
 
         }
 
@@ -63,16 +61,14 @@ namespace DevIO.Tests
         {
             //Arrange
             var fornecedor = _fornecedorTestsFixture.GerarFornecedorPJValido();
-            var mocker = new AutoMocker();
-            var fornecedorService = mocker.CreateInstance<FornecedorService>();
 
             //Act
-            fornecedorService.Adicionar(fornecedor);
+            _fornecedorService.Adicionar(fornecedor);
 
             //Assert
-            Assert.True(fornecedorService.ExecutarValidacao(new FornecedorValidation(), fornecedor));
-            Assert.True(fornecedorService.ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco));
-            mocker.GetMock<IFornecedorRepository>().Verify(r => r.Adicionar(fornecedor), Times.Once);
+            Assert.True(_fornecedorService.ExecutarValidacao(new FornecedorValidation(), fornecedor));
+            Assert.True(_fornecedorService.ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco));
+            _fornecedorTestsFixture.Mocker.GetMock<IFornecedorRepository>().Verify(r => r.Adicionar(fornecedor), Times.Once);
 
         }
 
@@ -80,14 +76,13 @@ namespace DevIO.Tests
         public void Remover_GuidFornecedorInvalido_DeveFalhar()
         {
             //Arrange
-            var mocker = new AutoMocker();
-            var fornecedorService = mocker.CreateInstance<FornecedorService>();
+            Guid guid = Guid.NewGuid();
 
             //Act
-            fornecedorService.Remover(new Guid());
+            _fornecedorService.Remover(guid);
 
             //Assert
-            mocker.GetMock<IFornecedorRepository>().Verify(r => r.Remover(new Guid()), Times.Never);
+            _fornecedorTestsFixture.Mocker.GetMock<IFornecedorRepository>().Verify(r => r.Remover(guid), Times.Never);
         }
 
         [Fact]
@@ -95,15 +90,12 @@ namespace DevIO.Tests
         {
             //Arrange
             var fornecedor = _fornecedorTestsFixture.GerarFornecedorInvalido();
-            var mocker = new AutoMocker();
-            var fornecedorService = mocker.CreateInstance<FornecedorService>();
 
             //Act
-            fornecedorService.Atualizar(fornecedor);
+            _fornecedorService.Atualizar(fornecedor);
 
             //Assert
-            //Assert.False(fornecedorService.ExecutarValidacao(new FornecedorValidation(), fornecedor));
-            mocker.GetMock<IFornecedorRepository>().Verify(r => r.Remover(new Guid()), Times.Never);
+            _fornecedorTestsFixture.Mocker.GetMock<IFornecedorRepository>().Verify(r => r.Remover(new Guid()), Times.Never);
         }
 
         [Fact]
@@ -111,15 +103,13 @@ namespace DevIO.Tests
         {
             //Arrange
             var fornecedor = _fornecedorTestsFixture.GerarFornecedorPFValido();
-            var mocker = new AutoMocker();
-            var fornecedorService = mocker.CreateInstance<FornecedorService>();
 
             //Act
-            fornecedorService.Atualizar(fornecedor);
+            _fornecedorService.Atualizar(fornecedor);
 
             //Assert
-            Assert.True(fornecedorService.ExecutarValidacao(new FornecedorValidation(), fornecedor));
-            mocker.GetMock<IFornecedorRepository>().Verify(r => r.Atualizar(fornecedor), Times.Once);
+            Assert.True(_fornecedorService.ExecutarValidacao(new FornecedorValidation(), fornecedor));
+            _fornecedorTestsFixture.Mocker.GetMock<IFornecedorRepository>().Verify(r => r.Atualizar(fornecedor), Times.Once);
         }
     }
    

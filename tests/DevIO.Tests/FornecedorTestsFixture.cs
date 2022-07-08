@@ -1,6 +1,8 @@
 ﻿using Bogus;
 using Bogus.DataSets;
 using DevIO.Business.Models;
+using DevIO.Business.Services;
+using Moq.AutoMock;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,8 @@ namespace DevIO.Tests
 
     public class FornecedorTestsFixture : IDisposable
     {
+        public FornecedorService FornecedorService;
+        public AutoMocker Mocker;
         public Fornecedor GerarFornecedorPFValido()
         {
             var genero = new Faker().PickRandom<Name.Gender>();
@@ -72,6 +76,13 @@ namespace DevIO.Tests
                 });
 
             return fornecedor;
+        }
+
+        public FornecedorService ObterFornecedorService()
+        {
+            Mocker = new AutoMocker();
+            FornecedorService = Mocker.CreateInstance<FornecedorService>();
+            return FornecedorService;
         }
 
         public void Dispose()
