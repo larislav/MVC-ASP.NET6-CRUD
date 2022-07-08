@@ -1,4 +1,6 @@
-﻿using DevIO.Business.Models;
+﻿using Bogus;
+using Bogus.DataSets;
+using DevIO.Business.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,22 +20,24 @@ namespace DevIO.Tests
     {
         public Fornecedor GerarFornecedorPFValido()
         {
-            var fornecedor = new Fornecedor
-            {
-                Nome = "Eddie Munson",
-                Documento = "29433590090",
-                TipoFornecedor = TipoFornecedor.PessoaFisica,
-                Endereco = new Endereco
-                {
-                    Logradouro = "Stranger",
-                    Bairro = "Things",
-                    Cep = "50000000",
-                    Cidade = "Hawkins",
-                    Estado = "Indiana",
-                    Numero = "011"
-                }
+            var genero = new Faker().PickRandom<Name.Gender>();
 
-            };
+            var fornecedor = new Faker<Fornecedor>("pt_BR")
+                .CustomInstantiator(f => new Fornecedor()
+                {
+                    Nome = $"{f.Name.FullName(genero)}",
+                    Documento = "29433590090",
+                    TipoFornecedor = TipoFornecedor.PessoaFisica,
+                    Endereco = new Endereco
+                    {
+                        Cidade = f.Address.City(),
+                        Bairro = f.Address.County(),
+                        Estado = f.Address.State(),
+                        Logradouro = f.Address.StreetName(),
+                        Numero = f.Address.BuildingNumber(),
+                        Cep = f.Address.ZipCode().Replace("-", "")
+                    }
+                });
 
             return fornecedor;
         }
@@ -48,22 +52,24 @@ namespace DevIO.Tests
 
         public Fornecedor GerarFornecedorPJValido()
         {
-            var fornecedor = new Fornecedor
-            {
-                Nome = "Eddie Munson",
-                Documento = "73753999000113",
-                TipoFornecedor = TipoFornecedor.PessoaJuridica,
-                Endereco = new Endereco
-                {
-                    Logradouro = "Stranger",
-                    Bairro = "Things",
-                    Cep = "50000000",
-                    Cidade = "Hawkins",
-                    Estado = "Indiana",
-                    Numero = "011"
-                }
+            var genero = new Faker().PickRandom<Name.Gender>();
 
-            };
+            var fornecedor = new Faker<Fornecedor>("pt_BR")
+                .CustomInstantiator(f => new Fornecedor
+                {
+                    Nome = $"{f.Name.FullName}",
+                    Documento = "73753999000113",
+                    TipoFornecedor = TipoFornecedor.PessoaJuridica,
+                    Endereco = new Endereco
+                    {
+                        Cep = f.Address.ZipCode().Replace("-", ""),
+                        Cidade = f.Address.City(),
+                        Bairro = f.Address.County(),
+                        Estado = f.Address.State(),
+                        Logradouro = f.Address.StreetName(),
+                        Numero = f.Address.BuildingNumber()
+                    }
+                });
 
             return fornecedor;
         }

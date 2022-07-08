@@ -24,7 +24,7 @@ namespace DevIO.Tests
         }
 
         [Fact]
-        public void Adicionar_FornecedorPFInvalido_DeveFalhar()
+        public void Adicionar_FornecedorInvalido_DeveFalhar()
         {
             //Arrange
             var fornecedor = _fornecedorTestsFixture.GerarFornecedorInvalido();
@@ -45,6 +45,24 @@ namespace DevIO.Tests
         {
             //Arrange
             var fornecedor = _fornecedorTestsFixture.GerarFornecedorPFValido();
+            var mocker = new AutoMocker();
+            var fornecedorService = mocker.CreateInstance<FornecedorService>();
+
+            //Act
+            fornecedorService.Adicionar(fornecedor);
+
+            //Assert
+            Assert.True(fornecedorService.ExecutarValidacao(new FornecedorValidation(), fornecedor));
+            Assert.True(fornecedorService.ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco));
+            mocker.GetMock<IFornecedorRepository>().Verify(r => r.Adicionar(fornecedor), Times.Once);
+
+        }
+
+        [Fact]
+        public void Adicionar_FornecedorPJValido_DeveAdicionarComSucesso()
+        {
+            //Arrange
+            var fornecedor = _fornecedorTestsFixture.GerarFornecedorPJValido();
             var mocker = new AutoMocker();
             var fornecedorService = mocker.CreateInstance<FornecedorService>();
 
